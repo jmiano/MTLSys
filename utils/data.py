@@ -130,13 +130,19 @@ class COCODataset(Dataset):
 
 
     def __getitem__(self, idx):
-        img = np.zeros((input_image_size[0], input_image_size[1], 3)).astype('float')
-        mask = np.zeros((input_image_size[0], input_image_size[1], 1)).astype('float')
         imageObj = self.images[idx]
 
-        train_img = getImage(imageObj, self.img_folder, self.input_image_size)
-        train_mask = getNormalMask(imageObj, self.coco, self.input_image_size)
-        img = train_img
-        mask = train_mask
+        img = getImage(imageObj, self.img_folder, self.input_image_size)
+        mask = getNormalMask(imageObj, self.coco, self.input_image_size)
+        
         classId = getClassId(imageObj, self.coco)
-        return img, mask, classId
+        
+        _image = np.array(img)
+        image = torch.from_numpy(_image)
+        image = image.permute(2, 0, 1)
+
+        _mask = np.array(mask)
+        _mask = torch.from_numpy(_mask)
+        _mask = _mask.permute(2, 0, 1)
+
+        return image, _mask, classId
