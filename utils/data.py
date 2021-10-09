@@ -5,6 +5,7 @@ import cv2
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from torch.utils.data import Dataset
+import torch
 
 def filterDataset(folder, mode='train'):
   annFile = '{}/annotations/instances_{}2017.json'.format(folder, mode)
