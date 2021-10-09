@@ -4,7 +4,7 @@ import skimage.io as io
 import cv2
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-
+from torch.utils.data import Dataset
 
 def filterDataset(folder, mode='train'):
   annFile = '{}/annotations/instances_{}2017.json'.format(folder, mode)
@@ -116,3 +116,27 @@ def visualizeGenerator(gen):
             fig.add_subplot(ax)            
     plt.show()
 
+
+
+class COCODataset(Dataset):
+    def __init__(self, folder, mode='train', input_image_size=(224,224)):
+        self.images, self.dataset_size, self.classes, self.coco = filterDataset(folder, mode)
+        self.folder = folder
+        self.input_image_size = input_image_size
+        self.img_folder = '{}/{}2017'.format(folder, mode)
+
+    def __len__(self):
+        return self.dataset_size
+
+
+    def __getitem__(self, idx):
+        img = np.zeros((input_image_size[0], input_image_size[1], 3)).astype('float')
+        mask = np.zeros((input_image_size[0], input_image_size[1], 1)).astype('float')
+        imageObj = self.images[idx]
+
+        train_img = getImage(imageObj, self.img_folder, self.input_image_size)
+        train_mask = getNormalMask(imageObj, self.coco, self.input_image_size)
+        img = train_img
+        mask = train_mask
+        classId = getClassId(imageObj, self.coco)
+        return img, mask, classId
