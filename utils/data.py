@@ -38,7 +38,7 @@ def getNormalMask(imageObj, coco, input_image_size):
     cats = coco.loadCats([anns[0]['category_id']])
     train_mask = np.zeros(input_image_size)
     className = cats[0]['name']
-    pixel_value = 1
+    pixel_value = anns[0]['category_id']
     new_mask = cv2.resize(coco.annToMask(anns[0])*pixel_value, input_image_size)
     train_mask = np.maximum(new_mask, train_mask)
 
