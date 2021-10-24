@@ -118,25 +118,42 @@ def visualizeGenerator(gen):
     plt.show()
 
 
+def getLabelMap():
+    val_dataset = COCODataset(folder='dataset', mode='val')
+    val_classes = []
+    for i, (img, mask, classId) in enumerate(val_dataset):
+        val_classes.append(classId)
+    val_classes = set(val_classes)
+    label_map = {}
+    sorted_val_classes = sorted(list(val_classes))
+    for i in range(len(sorted_val_classes)):
+        label_map[sorted_val_classes[i]] = i
+    return label_map
+
+
 
 class COCODataset(Dataset):
-    def __init__(self, folder, mode='train', input_image_size=(224,224)):
+    def __init__(self, folder, mode='train', input_image_size=(224,224), label_map=None):
         self.images, self.dataset_size, self.classes, self.coco = filterDataset(folder, mode)
         self.folder = folder
         self.input_image_size = input_image_size
         self.img_folder = '{}/{}2017'.format(folder, mode)
+        self.label_map = label_map
+        self.curr_len = self.dataset_size
 
     def __len__(self):
-        return self.dataset_size
+        return self.curr_len
 
 
     def __getitem__(self, idx):
         imageObj = self.images[idx]
 
         img = getImage(imageObj, self.img_folder, self.input_image_size)
-        mask = getNormalMask(imageObj, self.coco, self.input_image_size)
+        mask = getBinaryMask(imageObj, self.coco, self.input_image_size)
         
         classId = getClassId(imageObj, self.coco)
+        if self.label_map != None and classId in self.label_map:
+            classId = self.label_map[classId]  # map class labels to values from 0 to 59
         
         _image = np.array(img)
         image = torch.from_numpy(_image)
