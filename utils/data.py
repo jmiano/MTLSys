@@ -162,5 +162,6 @@ class COCODataset(Dataset):
         _mask = np.array(mask)
         _mask = torch.from_numpy(_mask)
         _mask = _mask.permute(2, 0, 1)
+        _mask = _mask * classId
 
         return image, _mask, classId
