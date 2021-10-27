@@ -8,7 +8,7 @@ import matplotlib.gridspec as gridspec
 from torch.utils.data import Dataset
 import torch
 
-def filterDataset(folder, mode='train', label_map=None):
+def filterDataset(folder, mode='train', label_map=None, newTrainClasses=None):
   annFile = '{}/annotations/instances_{}2017.json'.format(folder, mode)
   coco = COCO(annFile)
   images = []
@@ -17,7 +17,9 @@ def filterDataset(folder, mode='train', label_map=None):
     ann_ids = coco.getAnnIds(imgIds=[id], iscrowd=None)
     anns = coco.loadAnns(ann_ids)
     if(len(anns) == 1) : 
-        if(label_map!=None and anns[0]['category_id'] not in label_map):
+        if(newTrainClasses != None and anns[0]['category_id'] not in newTrainClasses):
+            continue
+        if(label_map != None and anns[0]['category_id'] not in label_map):
             continue
         images+=coco.loadImgs(id)
         classes.append(anns[0]['category_id'])
@@ -121,11 +123,12 @@ def visualizeGenerator(gen):
     plt.show()
 
 
-def getLabelMap():
+def getLabelMap(newTrainClasses=None):
     val_dataset = COCODataset(folder='dataset', mode='val')
     val_classes = []
     for i, (img, mask, classId) in enumerate(val_dataset):
-        val_classes.append(classId)
+        if classId in newTrainClasses:
+            val_classes.append(classId)
     val_classes = set(val_classes)
     label_map = {}
     sorted_val_classes = sorted(list(val_classes))
@@ -134,10 +137,24 @@ def getLabelMap():
     return label_map
 
 
+def getNewTrainClasses(numSamples=500):
+    train_dataset = COCODataset(folder='dataset', mode='train')
+    train_counts = {}
+    for i in range(1000):
+        train_counts[i] = 0
+    for image, mask, classId in train_dataset:
+        train_counts[classId] += 1
+
+    newTrainClasses = []
+    for k, v in train_counts.items():
+        if v >= numSamples:
+            newTrainClasses.append(k)
+    return newTrainClasses
+
 
 class COCODataset(Dataset):
-    def __init__(self, folder, mode='train', input_image_size=(224,224), label_map=None):
-        self.images, self.dataset_size, self.classes, self.coco = filterDataset(folder, mode, label_map)
+    def __init__(self, folder, mode='train', input_image_size=(224,224), label_map=None, newTrainClasses=None):
+        self.images, self.dataset_size, self.classes, self.coco = filterDataset(folder, mode, label_map, newTrainClasses)
         self.folder = folder
         self.input_image_size = input_image_size
         self.img_folder = '{}/{}2017'.format(folder, mode)
@@ -156,7 +173,7 @@ class COCODataset(Dataset):
         
         classId = getClassId(imageObj, self.coco)
         if self.label_map != None and classId in self.label_map:
-            classId = self.label_map[classId]  # map class labels to values from 0 to 59
+            classId = self.label_map[classId]  # map class labels to values from 0 to 7
         
         _image = np.array(img)
         image = torch.from_numpy(_image)
