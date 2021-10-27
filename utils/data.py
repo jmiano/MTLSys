@@ -1,3 +1,4 @@
+
 from pycocotools.coco import COCO
 import numpy as np
 import skimage.io as io
@@ -7,7 +8,7 @@ import matplotlib.gridspec as gridspec
 from torch.utils.data import Dataset
 import torch
 
-def filterDataset(folder, mode='train'):
+def filterDataset(folder, mode='train', label_map=None):
   annFile = '{}/annotations/instances_{}2017.json'.format(folder, mode)
   coco = COCO(annFile)
   images = []
@@ -16,6 +17,8 @@ def filterDataset(folder, mode='train'):
     ann_ids = coco.getAnnIds(imgIds=[id], iscrowd=None)
     anns = coco.loadAnns(ann_ids)
     if(len(anns) == 1) : 
+        if(label_map!=None and anns[0]['category_id'] not in label_map):
+            continue
       images+=coco.loadImgs(id)
       classes.append(anns[0]['category_id'])
   dataset_size = len(images)
@@ -134,7 +137,7 @@ def getLabelMap():
 
 class COCODataset(Dataset):
     def __init__(self, folder, mode='train', input_image_size=(224,224), label_map=None):
-        self.images, self.dataset_size, self.classes, self.coco = filterDataset(folder, mode)
+        self.images, self.dataset_size, self.classes, self.coco = filterDataset(folder, mode, label_map)
         self.folder = folder
         self.input_image_size = input_image_size
         self.img_folder = '{}/{}2017'.format(folder, mode)
