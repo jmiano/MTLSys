@@ -19,8 +19,8 @@ def filterDataset(folder, mode='train', label_map=None):
     if(len(anns) == 1) : 
         if(label_map!=None and anns[0]['category_id'] not in label_map):
             continue
-      images+=coco.loadImgs(id)
-      classes.append(anns[0]['category_id'])
+        images+=coco.loadImgs(id)
+        classes.append(anns[0]['category_id'])
   dataset_size = len(images)
   return images, dataset_size, classes, coco
 
