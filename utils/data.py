@@ -133,7 +133,7 @@ def getLabelMap(newTrainClasses=None):
     label_map = {}
     sorted_val_classes = sorted(list(val_classes))
     for i in range(len(sorted_val_classes)):
-        label_map[sorted_val_classes[i]] = i
+        label_map[sorted_val_classes[i]] = i + 1
     return label_map
 
 
