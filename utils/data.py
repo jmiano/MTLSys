@@ -222,10 +222,3 @@ def data_transform():
     return transforms.Compose([
         transforms.ToTensor(),
     ])
-
-
-def get_metrics(gt_vec, pred_vec):
-    accuracy = perf.accuracy_score(gt_vec, pred_vec)
-    f1 = perf.f1_score(gt_vec, pred_vec, average='macro')
-    
-    return f1, accuracy
