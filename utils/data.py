@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 from torch.utils.data import Dataset
 import torch
+import torchvision.transforms as transforms
+import os
+from PIL import Image
+
 
 def filterDataset(folder, mode='train', label_map=None, newTrainClasses=None):
   annFile = '{}/annotations/instances_{}2017.json'.format(folder, mode)
@@ -185,3 +189,43 @@ class COCODataset(Dataset):
         _mask = _mask * classId
 
         return image, _mask, classId
+
+
+class FacesDataset(Dataset):
+    def __init__(self, folder='UTKFace', transform=None, age_filter=None):
+        self.data_list = []
+        self.transform = transform
+        self.folder = folder
+        
+        for filename in os.listdir(self.folder):
+            components = filename.split('_')
+            if len(components) == 4:
+                age = int(components[0])
+                gender = int(components[1])
+                ethnicity = int(components[2])
+                img = Image.open(f'{self.folder}/{filename}')
+                img = self.transform(img)
+                img = img.type(torch.FloatTensor)
+
+                self.data_list.append([img, age, gender, ethnicity])
+            
+
+    def __len__(self):
+        return len(self.data_list)
+
+
+    def __getitem__(self, idx):
+        return self.data_list[idx]
+
+
+def data_transform():
+    return transforms.Compose([
+        transforms.ToTensor(),
+    ])
+
+
+def get_metrics(gt_vec, pred_vec):
+    accuracy = perf.accuracy_score(gt_vec, pred_vec)
+    f1 = perf.f1_score(gt_vec, pred_vec, average='macro')
+    
+    return f1, accuracy
