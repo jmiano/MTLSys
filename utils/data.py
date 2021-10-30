@@ -196,7 +196,7 @@ class FacesDataset(Dataset):
         self.data_list = []
         self.transform = transform
         self.folder = folder
-        
+
         for filename in os.listdir(self.folder):
             components = filename.split('_')
             if len(components) == 4:
@@ -208,8 +208,7 @@ class FacesDataset(Dataset):
                 img = img.type(torch.FloatTensor)
 
                 self.data_list.append([img, age, gender, ethnicity])
-            
-
+                
     def __len__(self):
         return len(self.data_list)
 

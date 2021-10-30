@@ -5,7 +5,7 @@ import torch
 def train_mtl_model(num_epochs=10, model=None, optimizer=None,
                     train_loader=None, val_loader=None, 
                     age_criterion=None, gender_criterion=None, ethni_criterion=None,
-                    age_coeff=None, gender_coeff=None, ethni_coeff=None):
+                    age_coeff=None, gender_coeff=None, ethni_coeff=None, save=True):
 
     best_val_loss = float(math.inf)
     for epoch in range(num_epochs):
@@ -99,7 +99,8 @@ def train_mtl_model(num_epochs=10, model=None, optimizer=None,
         avg_val_ethni_loss = tot_val_ethni_loss / tot_val_samples
 
         if (avg_val_loss < best_val_loss):
-            torch.save(model.state_dict(),"models/mtl_face_model_v1.pt")
+            if save:
+                torch.save(model.state_dict(),"models/mtl_face_model_v1.pt")
             print (f'Epoch {epoch}, val loss: {best_val_loss:.5f} -> {avg_val_loss:.5f}, train loss: {avg_train_loss:.5f}')
             print (f'Epoch {epoch}, age val loss: {avg_val_age_loss:.5f}, gender val loss: {avg_val_gender_loss:.5f}, ethnicity val loss: {avg_val_ethni_loss:.5f}')
             print()
