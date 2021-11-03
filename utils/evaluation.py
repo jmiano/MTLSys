@@ -108,7 +108,7 @@ def show_example_predictions(model, data_loader, mtl_model=True):
         for i in range(len(img)):
             plt.imshow(img[i][0].cpu())
             plt.axis('off')
-            plt.title(f'age_pred: {age_pred[i].cpu(): .2f}, gender_pred: {gender_pred[i].cpu()}, ethnicity_pred: {ethnicity_pred[i].cpu()}')
+            plt.title(f'age prediction: {age_pred[i].cpu(): .2f}\ngender prediction: {gender_pred[i].cpu()}\nethnicity prediction: {ethnicity_pred[i].cpu()}')
             plt.show()
     else:
         print('show_example_predictions is only supported for MTL models so far.')
