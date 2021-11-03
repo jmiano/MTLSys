@@ -106,7 +106,7 @@ def show_example_predictions(model, data_loader, mtl_model=True):
                 break
 
         for i in range(len(img)):
-            plt.imshow(img[i][0].cpu())
+            plt.imshow(img[i].transpose(0, 2).transpose(0, 1).cpu())
             plt.axis('off')
             plt.title(f'age prediction: {age_pred[i].cpu(): .2f}\ngender prediction: {gender_pred[i].cpu()}\nethnicity prediction: {ethnicity_pred[i].cpu()}')
             plt.show()
