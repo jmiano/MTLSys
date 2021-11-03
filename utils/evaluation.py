@@ -1,6 +1,7 @@
 import sklearn.metrics as perf
 import torch
 import matplotlib.pyplot as plt
+import time
 
 
 def get_classification_metrics(gt_vec, pred_vec):
@@ -84,14 +85,20 @@ def run_evaluation(model, data_loader, tasks, mtl_model=True):
     return score_dict
 
 
-def show_example_predictions(model, data_loader, mtl_model=True):
+def show_example_predictions(model, data_loader, mtl_model=True, use_gpu=True, num_predictions=10):
+    model.eval()
+    if use_gpu:
+        model = model.cuda()
+    predictions = []
     if mtl_model:
         with torch.no_grad():
             for i, (img, age, gender, ethnicity) in enumerate(data_loader):
-                img = img.cuda()
-                age = age.float().cuda()
-                gender = gender.long().cuda()
-                ethnicity = ethnicity.long().cuda()
+                start_time = time.time()
+                if use_gpu:
+                    img = img.cuda()
+                    age = age.float().cuda()
+                    gender = gender.long().cuda()
+                    ethnicity = ethnicity.long().cuda()
 
                 # Get outputs
                 age_output, gender_output, ethnicity_output = model(img)
@@ -103,12 +110,16 @@ def show_example_predictions(model, data_loader, mtl_model=True):
                 age_pred = age_output
                 gender_pred = torch.argmax(gender_output, axis=1)
                 ethnicity_pred = torch.argmax(ethnicity_output, axis=1)
-                break
+                latency = (time.time() - start_time) * 1000
+                predictions.append([img, (age_pred, age), (gender_pred, gender), (ethnicity_pred, ethnicity), latency])
+                if i >= num_predictions:
+                    break
 
-        for i in range(len(img)):
-            plt.imshow(img[i].transpose(0, 2).transpose(0, 1).cpu())
+        for img, (age_pred, age), (gender_pred, gender), (ethnicity_pred, ethnicity), latency in predictions:
+            img = img.squeeze(0)
+            plt.imshow(img.transpose(0, 2).transpose(0, 1).cpu())
             plt.axis('off')
-            plt.title(f'age prediction: {age_pred[i].cpu(): .2f}\ngender prediction: {gender_pred[i].cpu()}\nethnicity prediction: {ethnicity_pred[i].cpu()}')
+            plt.title(f'''age prediction: {age_pred.cpu().item(): .2f}, true age: {age.cpu().item()}\ngender prediction: {gender_pred.cpu().item()}, true gender: {gender.cpu().item()}\nethnicity prediction: {ethnicity_pred.cpu().item()}, true ethnicity: {ethnicity.cpu().item()}\nlatency: {latency:.3f} ms''')
             plt.show()
     else:
         print('show_example_predictions is only supported for MTL models so far.')
