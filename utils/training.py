@@ -4,16 +4,18 @@ import torch
 
 def train_mtl_model(num_epochs=10, model=None, optimizer=None,
                     train_loader=None, val_loader=None, 
-                    age_criterion=None, gender_criterion=None, ethni_criterion=None,
-                    age_coeff=None, gender_coeff=None, ethni_coeff=None, save=True):
+                    age_criterion=None, gender_criterion=None, ethnicity_criterion=None,
+                    age_coeff=None, gender_coeff=None, ethnicity_coeff=None, save=True,
+                    save_name=None):
 
     best_val_loss = float(math.inf)
+    model = model.cuda()
     for epoch in range(num_epochs):
         avg_train_loss = 0
         tot_train_loss = 0
         tot_train_age_loss = 0
         tot_train_gender_loss = 0
-        tot_train_ethni_loss = 0
+        tot_train_ethnicity_loss = 0
         tot_train_samples = 0
         
         # Training Loop
@@ -36,13 +38,13 @@ def train_mtl_model(num_epochs=10, model=None, optimizer=None,
             # Calculate losses
             age_loss = age_criterion(age_output, age)
             gender_loss = gender_criterion(gender_output, gender)
-            ethnicity_loss = ethni_criterion(ethnicity_output, ethnicity)
-            multi_loss = age_coeff*age_loss + gender_coeff*gender_loss + ethni_coeff*ethnicity_loss
+            ethnicity_loss = ethnicity_criterion(ethnicity_output, ethnicity)
+            multi_loss = age_coeff*age_loss + gender_coeff*gender_loss + ethnicity_coeff*ethnicity_loss
                 
             tot_train_loss += multi_loss.item()
             tot_train_age_loss += age_coeff*age_loss.item()
             tot_train_gender_loss += gender_coeff*gender_loss.item()
-            tot_train_ethni_loss += ethni_coeff*ethnicity_loss.item()
+            tot_train_ethnicity_loss += ethnicity_coeff*ethnicity_loss.item()
             tot_train_samples += img.shape[0]
 
             # Get grad
@@ -54,14 +56,14 @@ def train_mtl_model(num_epochs=10, model=None, optimizer=None,
         avg_train_loss = tot_train_loss / tot_train_samples
         avg_train_age_loss = tot_train_age_loss / tot_train_samples
         avg_train_gender_loss = tot_train_gender_loss / tot_train_samples
-        avg_train_ethni_loss = tot_train_ethni_loss / tot_train_samples
+        avg_train_ethnicity_loss = tot_train_ethnicity_loss / tot_train_samples
 
 
         avg_val_loss = 0
         tot_val_loss = 0
         tot_val_age_loss = 0
         tot_val_gender_loss = 0
-        tot_val_ethni_loss = 0
+        tot_val_ethnicity_loss = 0
         tot_val_samples = 0
         
         # Iterate through the val dataset
@@ -84,36 +86,34 @@ def train_mtl_model(num_epochs=10, model=None, optimizer=None,
             # Calculate losses
             age_loss = age_criterion(age_output, age)
             gender_loss = gender_criterion(gender_output, gender)
-            ethnicity_loss = ethni_criterion(ethnicity_output, ethnicity)
-            multi_loss = age_coeff*age_loss + gender_coeff*gender_loss + ethni_coeff*ethnicity_loss
+            ethnicity_loss = ethnicity_criterion(ethnicity_output, ethnicity)
+            multi_loss = age_coeff*age_loss + gender_coeff*gender_loss + ethnicity_coeff*ethnicity_loss
             
             tot_val_loss += multi_loss.item()
             tot_val_age_loss += age_coeff*age_loss.item()
             tot_val_gender_loss += gender_coeff*gender_loss.item()
-            tot_val_ethni_loss += ethni_coeff*ethnicity_loss.item()
+            tot_val_ethnicity_loss += ethnicity_coeff*ethnicity_loss.item()
             tot_val_samples += img.shape[0]
             
         avg_val_loss = tot_val_loss / tot_val_samples
         avg_val_age_loss = tot_val_age_loss / tot_val_samples
         avg_val_gender_loss = tot_val_gender_loss / tot_val_samples
-        avg_val_ethni_loss = tot_val_ethni_loss / tot_val_samples
+        avg_val_ethnicity_loss = tot_val_ethnicity_loss / tot_val_samples
 
         if (avg_val_loss < best_val_loss):
             if save:
-                torch.save(model.state_dict(),"models/mtl_face_model_v1.pt")
+                torch.save(model, f"models/{save_name}")
             print (f'Epoch {epoch}, val loss: {best_val_loss:.5f} -> {avg_val_loss:.5f}, train loss: {avg_train_loss:.5f}')
-            print (f'Epoch {epoch}, age val loss: {avg_val_age_loss:.5f}, gender val loss: {avg_val_gender_loss:.5f}, ethnicity val loss: {avg_val_ethni_loss:.5f}')
-            print()
+            print (f'Epoch {epoch}, age val loss: {avg_val_age_loss:.5f}, gender val loss: {avg_val_gender_loss:.5f}, ethnicity val loss: {avg_val_ethnicity_loss:.5f}')
             best_val_loss = avg_val_loss
         else:
             print (f'Epoch {epoch}, val loss: {avg_val_loss:.5f}, train loss: {avg_train_loss:.5f}')
-            print (f'Epoch {epoch}, age val loss: {avg_val_age_loss:.5f}, gender val loss: {avg_val_gender_loss:.5f}, ethnicity val loss: {avg_val_ethni_loss:.5f}')
-            print()
+            print (f'Epoch {epoch}, age val loss: {avg_val_age_loss:.5f}, gender val loss: {avg_val_gender_loss:.5f}, ethnicity val loss: {avg_val_ethnicity_loss:.5f}')
 
 
 def train_age_model(num_epochs=10, model=None, optimizer=None,
-                    train_loader=None, val_loader=None, age_criterion=None,
-                    age_coeff=None):
+                       train_loader=None, val_loader=None, age_criterion=None,
+                       age_coeff=None, save=True, save_name=None):
 
     best_val_loss = float(math.inf)
     for epoch in range(num_epochs):
@@ -181,7 +181,8 @@ def train_age_model(num_epochs=10, model=None, optimizer=None,
         avg_val_loss = tot_val_loss / tot_val_samples
 
         if (avg_val_loss < best_val_loss):
-            torch.save(model.state_dict(),"models/age_face_model_v1.pt")
+            if save:
+                torch.save(model, f"models/{save_name}")
             print (f'Epoch {epoch}, val loss: {best_val_loss:.5f} -> {avg_val_loss:.5f}, train loss: {avg_train_loss:.5f}')
             best_val_loss = avg_val_loss
         else:
@@ -190,7 +191,7 @@ def train_age_model(num_epochs=10, model=None, optimizer=None,
 
 def train_gender_model(num_epochs=10, model=None, optimizer=None,
                        train_loader=None, val_loader=None, gender_criterion=None,
-                       gender_coeff=None):
+                       gender_coeff=None, save=True, save_name=None):
 
     best_val_loss = float(math.inf)
     for epoch in range(num_epochs):
@@ -256,7 +257,8 @@ def train_gender_model(num_epochs=10, model=None, optimizer=None,
         avg_val_loss = tot_val_loss / tot_val_samples
 
         if (avg_val_loss < best_val_loss):
-            torch.save(model.state_dict(),"models/gender_face_model_v1.pt")
+            if save:
+                torch.save(model, f"models/{save_name}")
             print (f'Epoch {epoch}, val loss: {best_val_loss:.5f} -> {avg_val_loss:.5f}, train loss: {avg_train_loss:.5f}')
             best_val_loss = avg_val_loss
         else:
@@ -265,8 +267,8 @@ def train_gender_model(num_epochs=10, model=None, optimizer=None,
 
 
 def train_ethnicity_model(num_epochs=10, model=None, optimizer=None,
-                          train_loader=None, val_loader=None, ethni_criterion=None,
-                          ethni_coeff=None):
+                          train_loader=None, val_loader=None, ethnicity_criterion=None,
+                          ethnicity_coeff=None):
 
     best_val_loss = float(math.inf)
     for epoch in range(num_epochs):
@@ -286,11 +288,11 @@ def train_ethnicity_model(num_epochs=10, model=None, optimizer=None,
             optimizer.zero_grad()
 
             # Get outputs
-            ethni_output = model(img)
+            ethnicity_output = model(img)
 
             # Calculate losses
-            ethni_loss = ethni_criterion(ethni_output, ethnicity)
-            multi_loss = ethni_coeff*ethni_loss
+            ethnicity_loss = ethnicity_criterion(ethnicity_output, ethnicity)
+            multi_loss = ethnicity_coeff*ethnicity_loss
             
             tot_train_loss += multi_loss.item()
             tot_train_samples += img.shape[0]
@@ -320,11 +322,11 @@ def train_ethnicity_model(num_epochs=10, model=None, optimizer=None,
             optimizer.zero_grad()
 
             # Get outputs
-            ethni_output = model(img)
+            ethnicity_output = model(img)
 
             # Calculate losses
-            ethni_loss = ethni_criterion(ethni_output, ethnicity)
-            multi_loss = ethni_coeff*ethni_loss
+            ethnicity_loss = ethnicity_criterion(ethnicity_output, ethnicity)
+            multi_loss = ethnicity_coeff*ethnicity_loss
             
             tot_val_loss += multi_loss.item()
             tot_val_samples += img.shape[0]
@@ -332,7 +334,8 @@ def train_ethnicity_model(num_epochs=10, model=None, optimizer=None,
         avg_val_loss = tot_val_loss / tot_val_samples
 
         if (avg_val_loss < best_val_loss):
-            torch.save(model.state_dict(),"models/ethnicity_face_model_v1.pt")
+            if save:
+                torch.save(model, f"models/{save_name}")
             print (f'Epoch {epoch}, val loss: {best_val_loss:.5f} -> {avg_val_loss:.5f}, train loss: {avg_train_loss:.5f}')
             best_val_loss = avg_val_loss
         else:
@@ -341,8 +344,8 @@ def train_ethnicity_model(num_epochs=10, model=None, optimizer=None,
 
 def train_mtl_model_individual(num_epochs=10, model=None, optimizer=None,
                     train_loader=None, val_loader=None, 
-                    age_criterion=None, gender_criterion=None, ethni_criterion=None,
-                    age_coeff=None, gender_coeff=None, ethni_coeff=None, save=True, isAge=True, isGender=True, isEthnicity=True):
+                    age_criterion=None, gender_criterion=None, ethnicity_criterion=None,
+                    age_coeff=None, gender_coeff=None, ethnicity_coeff=None, save=True, isAge=True, isGender=True, isethnicity=True):
 
     best_val_loss = float(math.inf)
     for epoch in range(num_epochs):
@@ -350,7 +353,7 @@ def train_mtl_model_individual(num_epochs=10, model=None, optimizer=None,
         tot_train_loss = 0
         tot_train_age_loss = 0
         tot_train_gender_loss = 0
-        tot_train_ethni_loss = 0
+        tot_train_ethnicity_loss = 0
         tot_train_samples = 0
         
         # Training Loop
@@ -378,15 +381,15 @@ def train_mtl_model_individual(num_epochs=10, model=None, optimizer=None,
             if isGender:
                 gender_loss = gender_criterion(gender_output, gender)
                 multi_loss = gender_coeff*gender_loss
-            if isEthnicity:
-                ethnicity_loss = ethni_criterion(ethnicity_output, ethnicity)
-                multi_loss = ethni_coeff*ethnicity_loss
-#             multi_loss = age_coeff*age_loss + gender_coeff*gender_loss + ethni_coeff*ethnicity_loss
+            if isethnicity:
+                ethnicity_loss = ethnicity_criterion(ethnicity_output, ethnicity)
+                multi_loss = ethnicity_coeff*ethnicity_loss
+#             multi_loss = age_coeff*age_loss + gender_coeff*gender_loss + ethnicity_coeff*ethnicity_loss
                 
             tot_train_loss += multi_loss.item()
 #             tot_train_age_loss += age_coeff*age_loss.item()
 #             tot_train_gender_loss += gender_coeff*gender_loss.item()
-#             tot_train_ethni_loss += ethni_coeff*ethnicity_loss.item()
+#             tot_train_ethnicity_loss += ethnicity_coeff*ethnicity_loss.item()
             tot_train_samples += img.shape[0]
 
             # Get grad
@@ -398,16 +401,16 @@ def train_mtl_model_individual(num_epochs=10, model=None, optimizer=None,
         avg_train_loss = tot_train_loss / tot_train_samples
 #         avg_train_age_loss = tot_train_age_loss / tot_train_samples
 #         avg_train_gender_loss = tot_train_gender_loss / tot_train_samples
-#         avg_train_ethni_loss = tot_train_ethni_loss / tot_train_samples
+#         avg_train_ethnicity_loss = tot_train_ethnicity_loss / tot_train_samples
 
 
         avg_val_loss = 0
         tot_val_loss = 0
         tot_val_age_loss = 0
         tot_val_gender_loss = 0
-        tot_val_ethni_loss = 0
+        tot_val_ethnicity_loss = 0
         tot_val_samples = 0
 
         print (f'Epoch {epoch}, val loss: {avg_val_loss:.5f}, train loss: {avg_train_loss:.5f}')
-#         print (f'Epoch {epoch}, age val loss: {avg_val_age_loss:.5f}, gender val loss: {avg_val_gender_loss:.5f}, ethnicity val loss: {avg_val_ethni_loss:.5f}')
+#         print (f'Epoch {epoch}, age val loss: {avg_val_age_loss:.5f}, gender val loss: {avg_val_gender_loss:.5f}, ethnicity val loss: {avg_val_ethnicity_loss:.5f}')
         print()
