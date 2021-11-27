@@ -1,13 +1,14 @@
 import torch
+from models.models import MTLClassifier, AgeRegressor, GenderClassifier, EthnicityClassifier
 
 class model_info():
 	"""docstring for model_info"""
-	def __init__(self, name, accuracy, load_latency, inf_latency, tasks, model, prune):
+	def __init__(self, name, accuracy, load_latency, inf_latency, tasks, file_path, prune):
 		self.name = name
-		self.model= model
+		self.file_path= file_path
 		self.accuracy = accuracy
 		self.load_latency = load_latency
-		self.inf_latency = inf_latency #in ms
+		self.latency = inf_latency #in ms
 		self.tasks = tasks
 		self.tasks_count = len(tasks)
 		self.pruned = prune
@@ -19,21 +20,26 @@ def load_all_task_models_info(model_file = "model_score_lookup_multitask.tsv", f
 	models = []
 	tasks = ["age", "gender", "ethnicity"]
 	with open(folder+ "/" + model_file, "r") as f:
-		f.readlines()
-		for i in f.readlines():
+		
+		file = f.readlines()
+		file = file[1:]
+		for i in file:
 			i = i.split("\t")
+			## Remove \n from last item
+			i[-1] = i[-1][:-1]
 			if (i[0] != "ALL"): break
 			tasks_count = 3
-			inf_latency = i[2] * 1000
+			inf_latency = int(float(i[2]) * 1000)
 			accuracies = []
 			## Update this
 			load_latency = 10
 			for task in range(1,tasks_count+1):
 				accuracies.append(i[task+3])
-			prune = i[1]*100
+			prune = int(float(i[1])*100)
 			name = "all_p-"+str(prune)+"_MTLModel.pth"
-			model_object = load_model(name, folder)
-			model = model_info(name, accuracies, load_latency, inf_latency, tasks, model_object, prune)
+			file_path = folder+"/"+name
+			# model_object = load_model(name, folder)
+			model = model_info(name, accuracies, load_latency, inf_latency, tasks, file_path, prune)
 			models.append(model)
 	return models
 
@@ -43,24 +49,30 @@ def load_one_task_models_info(model_file="model_score_lookup_singletask.tsv", fo
 	tasks = [task_name]
 	tasks_count =1
 	with open(folder+ "/" + model_file, "r") as f:
-		f.readlines()
-		for i in f.readlines():
+		file = f.readlines()
+		file = file[1:]
+		for i in file:
 			i = i.split("\t")
-			if (lower(i[0]) != task_name): break
-			inf_latency = i[2]*1000
+			## Remove \n from last item
+			i[-1] = i[-1][:-1]
+			if (i[0].lower() != task_name): continue
+			inf_latency = int(float(i[2]) * 1000)
+			
 			accuracies = []
 			## Update this
 			load_latency = 10
-			prune = i[1]*100
+			prune = int(float(i[1])*100)
+
 			for task in range(1,4):
-				if(float(i[tasks+3]) != 0.0):
-					accuracies.append(i[task])
+				if(float(i[task+3]) != 0.0):
+					accuracies.append(float(i[task+3]))
 			if mtl_model:
-				name = task_name+"_p-"+prune+"_MTLModel.pth"
+				name = task_name+"_p-"+str(prune)+"_MTLModel.pth"
 			else:
-				name = task_name+"_p-"+prune+"SingleTaskModel.pth"
-			model_object = load_model(name, folder)
-			model = model_info(name, accuracies, load_latency, inf_latency, tasks, model_object, prune)
+				name = task_name+"_p-"+str(prune)+"SingleTaskModel.pth"
+			# model_object = load_model(name, folder)
+			file_path = folder+"/"+name
+			model = model_info(name, accuracies, load_latency, inf_latency, tasks, file_path, prune)
 			models.append(model)
 	return models
 
@@ -77,13 +89,16 @@ def get_models_table(models):
 		accuracy_table = {}
 		latencies = set([])
 		for model in models: 
-			model.latency[i] = round(model.latency, 2)
+			model.latency = round(float(model.latency), 2)
 			latencies.add(model.latency)
 		for latency in latencies:
 			table[latency] = 0
 		for model in models:
-			model.latency = round(model.latency, 2)
-			if(accuracy_table[model.latency] > model.accuracy[i]):
+			model.latency = round(float(model.latency), 2)
+			if(model.latency not in accuracy_table):
+				accuracy_table[model.latency] = model.accuracy[i]
+				table[model.latency] = model
+			elif(accuracy_table[model.latency] < model.accuracy[i]):
 				accuracy_table[model.latency] = model.accuracy[i]
 				table[model.latency] = model
 
