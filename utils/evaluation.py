@@ -49,7 +49,7 @@ def get_predictions(model, data_loader, task, mtl_model=True):
                     gender_pred = torch.argmax(gender_output, axis=1).cpu()
                     predictions.extend(list(gender_pred))
                     gt.extend(list(gender.cpu()))
-                if 'ethni' in task:
+                if 'ethnicity' in task:
                     ethnicity_pred = torch.argmax(ethnicity_output, axis=1).cpu()
                     predictions.extend(list(ethnicity_pred))
                     gt.extend(list(ethnicity.cpu()))
@@ -64,7 +64,7 @@ def get_predictions(model, data_loader, task, mtl_model=True):
                     pred = torch.argmax(output, axis=1).cpu()
                     predictions.extend(list(pred))
                     gt.extend(list(gender.cpu()))
-                elif 'ethni' in task:
+                elif 'ethnicity' in task:
                     pred = torch.argmax(output, axis=1).cpu()
                     predictions.extend(list(pred))
                     gt.extend(list(ethnicity.cpu()))
@@ -112,7 +112,7 @@ def show_example_predictions(model, data_loader, mtl_model=True, use_gpu=True, n
                 ethnicity_pred = torch.argmax(ethnicity_output, axis=1)
                 latency = (time.time() - start_time) * 1000
                 predictions.append([img, (age_pred, age), (gender_pred, gender), (ethnicity_pred, ethnicity), latency])
-                if i >= num_predictions:
+                if i >= num_predictions-1:
                     break
 
         for img, (age_pred, age), (gender_pred, gender), (ethnicity_pred, ethnicity), latency in predictions:
