@@ -96,7 +96,7 @@ def process_batch_requests(requests, min_accuracy=False):
 ## Prepare inference testing data 
 
 ### Load in the data
-folder = 'UTKFace'
+folder = '../UTKFace'
 transform = data_transform()
 dataset = FacesDataset(folder=folder, transform=transform)
 
@@ -114,19 +114,19 @@ train_loader = DataLoader(dataset=train_dataset, batch_size=16, shuffle=True)
 ## MTL Pruned Network System
 
 ### All three tasks
-three_task_models = load_all_task_models_info("model_score_lookup_multitask.tsv ", "models/model_variants")
+three_task_models = load_all_task_models_info("model_score_lookup_multitask.tsv ", "../models/model_variants")
 three_task_table = get_models_table(three_task_models)
 
 ### Age
-age_task_models = load_one_task_models_info("model_score_lookup_multitask.tsv", "models/model_variants" "age", True)
+age_task_models = load_one_task_models_info("model_score_lookup_multitask.tsv", "../models/model_variants" "age", True)
 age_task_table = get_models_table(age_task_models)
 
 ### Gender
-gender_task_models = load_one_task_models_info("model_score_lookup_multitask.tsv ", "models/model_variants", "gender", True)
+gender_task_models = load_one_task_models_info("model_score_lookup_multitask.tsv ", "../models/model_variants", "gender", True)
 gender_task_table = get_models_table(gender_task_models)
 
 ### Ethnicity
-ethnicity_task_models = load_one_task_models_info("model_score_lookup_multitask.tsv ", "models/model_variants/", "ethnicity", True)
+ethnicity_task_models = load_one_task_models_info("model_score_lookup_multitask.tsv ", "../models/model_variants/", "ethnicity", True)
 ethnicity_task_table = get_models_table(ethnicity_task_models)
 
 
