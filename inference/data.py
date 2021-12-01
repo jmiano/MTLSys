@@ -210,7 +210,8 @@ class FacesDataset(Dataset):
                 img = img.type(torch.FloatTensor)
 
                 self.data_list.append([img, age, gender, ethnicity])
-     
+
+
     def __len__(self):
         return len(self.data_list)
 

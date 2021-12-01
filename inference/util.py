@@ -1,5 +1,7 @@
 import torch
 from models.models import MTLClassifier, AgeRegressor, GenderClassifier, EthnicityClassifier
+import time, csv
+import numpy as np
 
 class model_info():
 	"""docstring for model_info"""
@@ -16,7 +18,7 @@ class model_info():
 
 
 
-def load_all_task_models_info(model_file = "model_score_lookup_multitask.tsv", folder="models/model_variants"):
+def load_all_task_models_info(dataloader, model_file = "model_score_lookup_multitask.tsv", folder="models/model_variants"):
 	models = []
 	tasks = ["age", "gender", "ethnicity"]
 	with open(folder+ "/" + model_file, "r") as f:
@@ -39,12 +41,19 @@ def load_all_task_models_info(model_file = "model_score_lookup_multitask.tsv", f
 			name = "all_p-"+str(prune)+"_MTLModel.pth"
 			file_path = folder+"/"+name
 			# model_object = load_model(name, folder)
+			mean_lat, std_lat = get_lat(file_path, dataloader)
+			inf_latency = mean_lat*1000
 			model = model_info(name, accuracies, load_latency, inf_latency, tasks, file_path, prune)
 			models.append(model)
+			row = [i[0], i[1], mean_lat, std_lat, i[4], i[5], i[6]]
+			with open("calibareted_," + model_file, 'a', newline='') as f:
+			    writer = csv.writer(f, delimiter='\t')
+			    writer.writerow(row)
+
 	return models
 
 
-def load_one_task_models_info(model_file="model_score_lookup_singletask.tsv", folder="models/model_variants", task_name="age", mtl_model=False):
+def load_one_task_models_info(dataloader, model_file="model_score_lookup_singletask.tsv", folder="models/model_variants", task_name="age", mtl_model=False):
 	models = []
 	tasks = [task_name]
 	tasks_count =1
@@ -69,11 +78,19 @@ def load_one_task_models_info(model_file="model_score_lookup_singletask.tsv", fo
 			if mtl_model:
 				name = task_name+"_p-"+str(prune)+"_MTLModel.pth"
 			else:
-				name = task_name+"_p-"+str(prune)+"SingleTaskModel.pth"
+				name = task_name+"_p-"+str(prune)+"_SingleTaskModel.pth"
 			# model_object = load_model(name, folder)
 			file_path = folder+"/"+name
+			mean_lat, std_lat = get_lat(file_path, dataloader)
+			inf_latency = mean_lat*1000
 			model = model_info(name, accuracies, load_latency, inf_latency, tasks, file_path, prune)
 			models.append(model)
+
+			row = [i[0], i[1], mean_lat, std_lat, i[4], i[5], i[6]]
+			with open("caliberated_," + model_file, 'a', newline='') as f:
+			    writer = csv.writer(f, delimiter='\t')
+			    writer.writerow(row)
+
 	return models
 
 
@@ -106,3 +123,24 @@ def get_models_table(models):
 	return task_tables
 
 
+def get_lat(model_path, dataloader):
+    # Get latency
+    latencies = []
+    start = time.time()
+    model = torch.load(model_path, map_location=torch.device('cpu'))
+    load_time = time.time() - start
+    # for i, sample in enumerate(eval_dataset):
+    for i in range(100):
+        start = time.time()
+        model = model.cpu()
+        # image = sample[0].unsqueeze(0)
+        image = next(iter(dataloader))[0]
+        output = model(image)
+        lat = time.time() - start
+        latencies.append(lat)
+        if i >= 100:
+            break
+    mean_lat = np.mean(latencies)
+    std_lat = np.std(latencies)
+
+    return load_time + mean_lat, std_lat
