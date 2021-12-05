@@ -139,7 +139,7 @@ def get_lat(model_path, dataloader):
         model = torch.load(model_path, map_location=torch.device('cpu'))
         # model = model.cpu()
         # image = sample[0].unsqueeze(0)
-        image = next(iter(dataloader))[0]
+        image = next(iter(dataloader))[0][0].unsqueeze(0)
         # output = model(image.cuda())
         output = model(image)
         lat = time.time() - start
