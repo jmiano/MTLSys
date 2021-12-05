@@ -65,7 +65,8 @@ def load_one_task_models_info(dataloader, model_file="model_score_lookup_singlet
 			## Remove \n from last item
 			i[-1] = i[-1][:-1]
 			if (i[0].lower() != task_name): continue
-			inf_latency = int(float(i[2]) * 1000)
+			# inf_latency = int(float(i[2]) * 1000)
+			inf_latency = float(i[2]) * 1000
 			
 			accuracies = []
 			## Update this
@@ -106,12 +107,12 @@ def get_models_table(models):
 		accuracy_table = {}
 		latencies = set([])
 		for model in models: 
-			model.latency = round(float(model.latency), 2)
+			model.latency = round(float(model.latency), 6)
 			latencies.add(model.latency)
 		for latency in latencies:
 			table[latency] = 0
 		for model in models:
-			model.latency = round(float(model.latency), 2)
+			model.latency = round(float(model.latency), 6)
 			if(model.latency not in accuracy_table):
 				accuracy_table[model.latency] = model.accuracy[i]
 				table[model.latency] = model
@@ -126,21 +127,27 @@ def get_models_table(models):
 def get_lat(model_path, dataloader):
     # Get latency
     latencies = []
-    start = time.time()
-    model = torch.load(model_path, map_location=torch.device('cpu'))
-    load_time = time.time() - start
+    # start = time.time()
+    # model = torch.load(model_path, map_location=torch.device('cpu'))
+    # model = torch.load(model_path)
+    # load_time = time.time() - start
     # for i, sample in enumerate(eval_dataset):
     for i in range(100):
         start = time.time()
-        model = model.cpu()
+        # model = torch.load(model_path)
+        # model = model.cuda()
+        model = torch.load(model_path, map_location=torch.device('cpu'))
+        # model = model.cpu()
         # image = sample[0].unsqueeze(0)
         image = next(iter(dataloader))[0]
+        # output = model(image.cuda())
         output = model(image)
         lat = time.time() - start
-        latencies.append(lat)
+        if i >= 1: # skip first sample (to be consistent with GPU code)
+            latencies.append(lat)
+        # latencies.append(lat)
         if i >= 100:
             break
     mean_lat = np.mean(latencies)
     std_lat = np.std(latencies)
-
-    return load_time + mean_lat, std_lat
+    return mean_lat, std_lat
