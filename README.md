@@ -4,7 +4,7 @@
 #### Install dependencies
 
 * `pip install -r requirements.txt`
-* [Install Jupiter Notebook](https://jupyter.org/install)
+* [Install Jupyter Notebook](https://jupyter.org/install)
 
 #### Model Variant Generation
 To run the example of the MTL model variant generation on a small sample dataset - 
@@ -38,7 +38,7 @@ unzip all files.
 #### Install dependencies
 
 * `pip install -r requirements.txt`
-* [Install Jupiter Notebook](https://jupyter.org/install)
+* [Install Jupyter Notebook](https://jupyter.org/install)
 
 
 #### Variant Generator
