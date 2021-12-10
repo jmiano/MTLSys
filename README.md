@@ -1,6 +1,6 @@
 # MTLSys: Latency-aware Pruning for Multi-task Learning
 
-## To run demo:
+## To run examples/demo:
 
 #### Install dependencies
 
@@ -10,15 +10,15 @@
 
 #### Download trained model-variants
 
-`gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
-`unzip model-variants.zip`
-`cp -r model-variants models/`
+* `gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
+* `unzip model-variants.zip`
+* `cp -r model-variants models/`
 
 #### Run the demo notebook
 
 To run the demo of the inference system on small sample dataset - 
 
-* Open the notebook - `inference/demo.ipynb`
+* Open the notebook - `examples/Inference_System_Demo.ipynb`
 * Run all cells
 * Wait for a few minutes as profiling takes time.
 
