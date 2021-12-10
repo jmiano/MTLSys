@@ -1,26 +1,17 @@
 # MTLSys: Latency-aware Pruning for Multi-task Learning
 
-## To run code:
-
+## Run examples/demos
 #### Install dependencies
 
 * `pip install -r requirements.txt`
 * [Install Jupiter Notebook](https://jupyter.org/install)
 
-## Run examples/demos
 #### Model Variant Generation
 To run the example of the MTL model variant generation on a small sample dataset - 
 * Open the notebook - `examples/Generate_Model_Variants_MTL_Example.ipynb`
 * Run all cells
 
 #### Inference
-
-##### Download trained model-variants
-
-* `gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
-* `unzip model-variants.zip`
-* `cp -r model-variants models/`
-
 To run the example of the inference system on a small sample dataset - 
 * Open the notebook - `examples/Inference_System_Demo.ipynb`
 * Run all cells
@@ -28,6 +19,12 @@ To run the example of the inference system on a small sample dataset -
 
 
 ## Run full system
+#### Download trained model-variants
+
+`gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
+`unzip model-variants.zip`
+`cp -r model-variants models/`
+
 
 ## To Download dataset - 
 
@@ -58,3 +55,8 @@ Run `Generate_Model_Variants_SingleTask.ipynb` to generate all the model-variant
 	* Replace `model.cpu()` with `model.cuda()`
 	* Replace `request_details.input_image` with `request_details.input_image.cuda()`
 	* Replace `output = model(image)` with `output = model(image.cuda())`
+
+## View Experimental Results
+* `TaskHead_Length_Experiments.ipynb` shows our code to test the effect of task head length on latency
+* `Pruning_Robustness_Experiments.ipynb` shows code testing relationship between pruning amount and accuracy
+* `inference/Inference.ipynb` shows code testing the system inference performance, including Pareto curves and mishit plots
