@@ -14,20 +14,20 @@ To run the example of the MTL model variant generation on a small sample dataset
 * Run all cells
 
 #### Inference
+
+##### Download trained model-variants
+
+* `gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
+* `unzip model-variants.zip`
+* `cp -r model-variants models/`
+
 To run the example of the inference system on a small sample dataset - 
-* Open the notebook - `examples/demo.ipynb`
+* Open the notebook - `examples/Inference_System_Demo.ipynb`
 * Run all cells
 * Wait for a few minutes as profiling takes time.
 
 
 ## Run full system
-
-#### Download trained model-variants
-
-`gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
-`unzip model-variants.zip`
-`cp -r model-variants models/`
-
 
 ## To Download dataset - 
 
