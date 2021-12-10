@@ -14,11 +14,15 @@
 `unzip model-variants.zip`
 `cp -r model-variants models/`
 
-#### Run the demo notebook
+## Run examples/demos
+#### Model Variant Generation
+To run the example of the MTL model variant generation on a small sample dataset - 
+* Open the notebook - `examples/Generate_Model_Variants_MTL_Example.ipynb`
+* Run all cells
 
-To run the demo of the inference system on small sample dataset - 
-
-* Open the notebook - `inference/demo.ipynb`
+#### Inference
+To run the example of the inference system on a small sample dataset - 
+* Open the notebook - `examples/demo.ipynb`
 * Run all cells
 * Wait for a few minutes as profiling takes time.
 
