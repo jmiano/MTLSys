@@ -39,7 +39,8 @@ unzip all files.
 
 #### Variant Generator
 
-Run `Train_All_Models.ipynb` to generate all the models-variants for MTL as well as the single-task models used in experiments.
+Run `Generate_Model_Variants_MTL.ipynb` to generate all the models-variants for the MTL version of the system.
+Run `Generate_Model_Variants_SingleTask.ipynb` to generate all the model-variants for the single-task version (with no MTL models) of the system.
 
 #### Inference System
 
