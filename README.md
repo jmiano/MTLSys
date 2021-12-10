@@ -1,23 +1,29 @@
-# repo_team14
+# MTLSys: Latency-aware Pruning for Multi-task Learning
+
+## To run demo:
+
+### Install dependencies
+
+* `pip install -r requirements.txt`
+* [Install Jupiter Notebook](https://jupyter.org/install)
+
+
+### Download trained model-variants
+
+`gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
+`unzip model-variants.zip`
+`cp -r model-variants models/`
+
+### Run the demo notebook
+
+To run the demo of the inference system on small sample dataset - 
+
+* Open the notebook - `inference/demo.ipynb`
+* Run all cells
+* Wait for a few minutes as profiling takes time.
 
 ## Download dataset - 
 
-`mkdir dataset`
-
-`cd dataset`
-
-`wget http://images.cocodataset.org/zips/train2017.zip`
-
-`wget http://images.cocodataset.org/zips/val2017.zip`
-
-`wget http://images.cocodataset.org/zips/test2017.zip`
-
-`wget http://images.cocodataset.org/annotations/annotations_trainval2017.zip`
+`gdown "https://drive.google.com/uc?id=18YAbwahQT808HjJ0ZthqX6oKNkYZd-Yf"`
 
 unzip all files.
-
-## Usage
-
-All data preparing functions are in `utils/data.py`
-
-A sample usage is given in `data_load_usage_sample.py`
