@@ -7,7 +7,11 @@
 * Activate the conda environment by running: `conda activate smr_env`
 * Open Jupyter notebooks by running: `jupyter notebook`
 * Navigate to and open the ipynb file of interest, open the "Kernel" menu, then "Change Kernel" and select the smr_env kernel
-* [Install Jupyter Notebook](https://jupyter.org/install)
+
+#### Download trained model-variants
+`gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
+`unzip model-variants.zip`
+`cp -r model-variants models/`
 
 #### Model Variant Generation
 To run the example of the MTL model variant generation on a small sample dataset - 
@@ -23,13 +27,6 @@ To run the example of the inference system on a small sample dataset -
 
 
 ## Run full system
-#### Download trained model-variants
-
-`gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
-`unzip model-variants.zip`
-`cp -r model-variants models/`
-
-
 ## To Download dataset - 
 
 `gdown "https://drive.google.com/uc?id=18YAbwahQT808HjJ0ZthqX6oKNkYZd-Yf"`
