@@ -1,0 +1,38 @@
+name: smr_env
+channels:
+- defaults
+- pytorch
+- conda-forge
+dependencies:
+- cudatoolkit=10.2.89
+- imageio
+- ipykernel
+- ipython
+- ipython_genutils
+- jupyter_client
+- jupyter_core
+- matplotlib
+- matplotlib-base
+- matplotlib-inline
+- numpy
+- numpy-base
+- opencv
+- openssl
+- pandas
+- pickleshare
+- pillow
+- python=3.8.11
+- pytorch=1.9.1
+- pyyaml
+- scikit-image
+- scikit-learn
+- scipy
+- seaborn
+- torchvision=0.10.1
+- tornado
+- yaml
+- pip
+- pip:
+  - torch-pruning==0.2.7
+  - gdown
+
