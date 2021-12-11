@@ -11,7 +11,7 @@
 #### Download trained model-variants
 * From `repo_team14`, change directory to the `examples/models` directory: `cd examples/models`
 * Run the command: `gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"`
-* Unzip the model-variants.zip file. They should populate the `examples/models/model_variants` directory.
+* Unzip the `model-variants.zip` file. The model files should populate the `examples/models/model_variants` directory.
 * If prompted to replace existing files, yes allow the files to be replaced
 
 #### Model Variant Generation
