@@ -1,8 +1,7 @@
 # MTLSys: Latency-aware Pruning for Multi-task Learning
 
 ## Run examples/demos
-#### Install dependencies
-
+#### Set up conda environment
 * Run the following command to set up the conda environment: 
 	* Windows: `conda env create --name smr_env --file smr_env_windows.yml`
 	* Linux: `conda env create --name smr_env --file smr_env_linux.yml`
@@ -40,8 +39,7 @@ To run the example of the MTL model variant generation on a small sample dataset
 
 ## Build and Run Code
 
-#### Install dependencies
-
+#### Set up conda environment (if not already set up)
 * Run the following command to set up the conda environment: 
 	* Windows: `conda env create --name smr_env --file smr_env_windows.yml`
 	* Linux: `conda env create --name smr_env --file smr_env_linux.yml`
