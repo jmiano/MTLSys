@@ -1,7 +1,6 @@
 numpy==1.21.2
 matplotlib==3.4.3
 scikit_image==0.18.3
-skimage==0.0
 matplotlib==3.4.3
 torch==1.10.0+cu113
 scikit-learn==1.0.1
