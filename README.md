@@ -9,7 +9,7 @@
 	* Linux: Install PyTorch: `conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch`
 * Activate the conda environment by running: `conda activate smr_env`
 * Open Jupyter notebooks by running: `jupyter notebook`
-* Navigate to and open the ipynb file of interest, open the "Kernel" menu, then "Change Kernel" and select the smr_env kernel
+* Once you open the ipynb file of interest, open the "Kernel" menu, then "Change Kernel" and select the smr_env kernel
 
 #### Download trained model-variants
 * From `repo_team14`, change directory to the `examples/models` directory: `cd examples/models`
