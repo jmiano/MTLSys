@@ -35,4 +35,5 @@ dependencies:
 - pip
 - pip:
   - torch-pruning==0.2.7
+  - gdown
 
