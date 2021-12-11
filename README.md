@@ -9,9 +9,9 @@
 * Navigate to and open the ipynb file of interest, open the "Kernel" menu, then "Change Kernel" and select the smr_env kernel
 
 #### Download trained model-variants
+* Change directory to the examples directory: `cd repo_team14/examples/models`
 * `gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"`
-* `unzip model-variants.zip`
-* `cp -r model-variants models/`
+* Unzip the model-variants.zip file
 
 #### Model Variant Generation
 To run the example of the MTL model variant generation on a small sample dataset - 
