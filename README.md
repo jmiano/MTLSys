@@ -9,7 +9,7 @@
 * Navigate to and open the ipynb file of interest, open the "Kernel" menu, then "Change Kernel" and select the smr_env kernel
 
 #### Download trained model-variants
-* `gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"e`
+* `gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"`
 * `unzip model-variants.zip`
 * `cp -r model-variants models/`
 
