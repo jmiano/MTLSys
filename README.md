@@ -17,18 +17,19 @@
 * Unzip the `model-variants.zip` file. The model files should populate the `examples/models/model_variants` directory.
 * If prompted to replace existing files, yes allow the files to be replaced
 
-#### Model Variant Generation
-To run the example of the MTL model variant generation on a small sample dataset - 
-* Open the notebook - `examples/Generate_Model_Variants_MTL_Example.ipynb`
-* Run all cells
-* The model variant files will be created and visible in the `examples/models/model_variants` directory.
-
 #### Inference
+Note: this example is run first, before the model variant generation example, so the inference demo can leverage the variants we trained on the larger dataset, which were downloaded and extracted in the "Download trained model-variants step."
 To run the example of the inference system on a small sample dataset - 
 * Open the notebook - `examples/Inference_System_Demo.ipynb`
 * Run all cells
 * Wait for a few minutes as profiling takes time.
 
+#### Model Variant Generation
+Note: the variants generated here will not perform well due to being trained on a small sample dataset, but this example is intended to show the variant generation process.
+To run the example of the MTL model variant generation on a small sample dataset - 
+* Open the notebook - `examples/Generate_Model_Variants_MTL_Example.ipynb`
+* Run all cells
+* The model variant files will be created and visible in the `examples/models/model_variants` directory.
 
 ## Run full system
 ## To Download dataset - 
