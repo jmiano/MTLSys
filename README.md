@@ -13,6 +13,7 @@
 To run the example of the MTL model variant generation on a small sample dataset - 
 * Open the notebook - `examples/Generate_Model_Variants_MTL_Example.ipynb`
 * Run all cells
+* The model variant files will be created and visible in the `examples/models/model_variants` directory.
 
 #### Inference
 To run the example of the inference system on a small sample dataset - 
