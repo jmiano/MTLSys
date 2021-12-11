@@ -10,7 +10,7 @@
 
 #### Download trained model-variants
 * From `repo_team14`, change directory to the `examples/models` directory: `cd examples/models`
-* `gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"`
+* Run the command: `gdown "https://drive.google.com/uc?id=1pG_6ncWFn8Gy4pIaz4Q4EE6JbGmD6RkM"`
 * Unzip the model-variants.zip file
 
 #### Model Variant Generation
@@ -29,7 +29,7 @@ To run the example of the inference system on a small sample dataset -
 ## Run full system
 ## To Download dataset - 
 
-* `gdown "https://drive.google.com/uc?id=18YAbwahQT808HjJ0ZthqX6oKNkYZd-Yf"`
+* Run the command: `gdown "https://drive.google.com/uc?id=18YAbwahQT808HjJ0ZthqX6oKNkYZd-Yf"`
 * unzip all files.
 
 
