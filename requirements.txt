@@ -1,6 +1,5 @@
 numpy==1.21.2
 matplotlib==3.4.3
-pycocotools==2.0
 scikit_image==0.18.3
 skimage==0.0
 matplotlib==3.4.3
