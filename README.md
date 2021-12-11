@@ -3,9 +3,9 @@
 ## Run examples/demos
 #### Install dependencies
 
-* Run the following command to set up the conda environment: conda env create --name smr_env --file smr_env.yml
-* Activate the conda environment by running: conda activate smr_env
-* Open Jupyter notebooks by running: jupyter notebook
+* Run the following command to set up the conda environment: `conda env create --name smr_env --file smr_env.yml`
+* Activate the conda environment by running: `conda activate smr_env`
+* Open Jupyter notebooks by running: `jupyter notebook`
 * [Install Jupyter Notebook](https://jupyter.org/install)
 
 #### Model Variant Generation
