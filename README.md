@@ -42,8 +42,13 @@ To run the example of the MTL model variant generation on a small sample dataset
 
 #### Install dependencies
 
-* `pip install -r requirements.txt`
-* [Install Jupyter Notebook](https://jupyter.org/install)
+* Run the following command to set up the conda environment: 
+	* Windows: `conda env create --name smr_env --file smr_env_windows.yml`
+	* Linux: `conda env create --name smr_env --file smr_env_linux.yml`
+	* Mac: `conda env create --name smr_env --file smr_env_mac.yml`
+* Activate the conda environment by running: `conda activate smr_env`
+* Open Jupyter notebooks by running: `jupyter notebook`
+* Once you open the ipynb file of interest, open the "Kernel" menu, then "Change Kernel" and select the smr_env kernel
 
 
 #### Variant Generator
