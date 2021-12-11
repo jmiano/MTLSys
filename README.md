@@ -3,7 +3,10 @@
 ## Run examples/demos
 #### Install dependencies
 
-* Run the following command to set up the conda environment: `conda env create --name smr_env --file smr_env.yml`
+* Run the following command to set up the conda environment: 
+	* Windows: `conda env create --name smr_env --file smr_env.yml`
+	* Linux: `conda env create --name smr_env --file smr_env_linux.yml`
+	* Linux: Install PyTorch: `conda install pytorch torchvision torchaudio cudatoolkit=11.3 -c pytorch`
 * Activate the conda environment by running: `conda activate smr_env`
 * Open Jupyter notebooks by running: `jupyter notebook`
 * Navigate to and open the ipynb file of interest, open the "Kernel" menu, then "Change Kernel" and select the smr_env kernel
