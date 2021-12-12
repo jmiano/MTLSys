@@ -7,7 +7,7 @@ dependencies:
 - python=3.8.1
 - cudatoolkit=10.2.89
 - pytorch=1.9.1
-- torchvision
+- torchvision=0.10.1
 - imageio
 - ipykernel=6.4.1
 - ipython=7.27.0
