@@ -4,16 +4,16 @@ channels:
 - pytorch
 - conda-forge
 dependencies:
-- python=3.8
+- python=3.8.1
 - cudatoolkit=10.2.89
 - pytorch=1.9.1
 - torchvision
 - imageio
-- ipykernel
-- ipython
-- ipython_genutils
-- jupyter_client
-- jupyter_core
+- ipykernel=6.4.1
+- ipython=7.27.0
+- ipython_genutils=0.2.0
+- jupyter_client=7.0.1
+- jupyter_core=4.8.1
 - nb_conda_kernels
 - matplotlib
 - matplotlib-base
