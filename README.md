@@ -8,8 +8,7 @@
 	* Mac: `conda env create --name smr_env --file smr_env_mac.yml`
 	* Note: if you encounter a version conflict when installing for Mac or Linux, please use `smr_env_linux_flexVersion.yml`.
 * Activate the conda environment by running: `conda activate smr_env`
-* Open Jupyter notebooks by running: `jupyter notebook`
-* Once you open the ipynb file of interest, open the "Kernel" menu, then "Change Kernel" and select the smr_env kernel
+* Keep this environment active throughout the next steps
 
 #### Download trained model-variants
 * From `repo_team14`, change directory to the `examples/models` directory: `cd examples/models`
@@ -20,7 +19,9 @@
 #### Inference
 Note: this example is run first, before the model variant generation example, so the inference demo can leverage the variants we trained on the larger dataset, which were downloaded and extracted in the "Download trained model-variants step."
 To run the example of the inference system on a small sample dataset - 
+* Navigate to the `repo_team14` directory and open Jupyter notebooks by running: `jupyter notebook`
 * Open the notebook - `examples/Inference_System_Demo.ipynb`
+* Once you open the ipynb file of interest, open the "Kernel" menu, then "Change Kernel" and select the smr_env kernel
 * Run all cells
 * Wait for a few minutes as profiling takes time.
 
