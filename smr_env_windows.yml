@@ -12,6 +12,7 @@ dependencies:
 - ipython_genutils=0.2.0=pyhd3eb1b0_1
 - jupyter_client=7.0.1=pyhd3eb1b0_0
 - jupyter_core=4.8.1=py38haa95532_0
+- nb_conda_kernels
 - matplotlib=3.4.2=py38haa95532_0
 - matplotlib-base=3.4.2=py38h49ac443_0
 - matplotlib-inline=0.1.2=pyhd3eb1b0_2
