@@ -4,6 +4,7 @@ channels:
 - pytorch
 - conda-forge
 dependencies:
+- python=3.7
 - cudatoolkit=10.2.89
 - imageio
 - ipykernel
@@ -21,7 +22,6 @@ dependencies:
 - pandas
 - pickleshare
 - pillow
-- python=3.8.11
 - pytorch=1.9.1
 - pyyaml
 - scikit-image
