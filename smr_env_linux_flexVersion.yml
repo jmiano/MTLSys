@@ -14,6 +14,7 @@ dependencies:
 - ipython_genutils
 - jupyter_client
 - jupyter_core
+- nb_conda_kernels
 - matplotlib
 - matplotlib-base
 - matplotlib-inline
