@@ -4,11 +4,11 @@
 #### Set up conda environment
 * Run the following command to set up the conda environment: 
 	* Windows: `conda env create --name smr_env --file smr_env_windows.yml`
-	* Linux: `conda env create --name smr_env --file smr_env_linux_flexVersion.yml`
+	* Linux: `conda env create --name smr_env --file smr_env_linux.yml`
 	* Mac: `conda env create --name smr_env --file smr_env_mac.yml`
-	* Note: if you encounter a version conflict when installing for Mac or Linux, please use `smr_env_linux_flexVersion.yml`.
 * Activate the conda environment by running: `conda activate smr_env`
 * Keep this environment active throughout the next steps
+* Note: you must have GPU with NVIDIA CUDA configured for our code to run, since it runs on GPU.
 
 #### Download trained model-variants
 * From `repo_team14`, change directory to the `examples/models` directory: `cd examples/models`
