@@ -8,7 +8,7 @@
 	* Mac: `conda env create --name smr_env --file smr_env_mac.yml`
 * Activate the conda environment by running: `conda activate smr_env`
 * Keep this environment active throughout the next steps
-* Note: you must have a GPU with NVIDIA Drivers configured on your system for our code to run, since the Model Variant Generation part of the examples/demos runs on GPU.
+* Note: you must have a GPU with NVIDIA Drivers configured on your system for the Model Variant Generation part of the examples/demos, since it runs on GPU.
 
 #### Download trained model-variants
 * From `repo_team14`, change directory to the `examples/models` directory: `cd examples/models`
