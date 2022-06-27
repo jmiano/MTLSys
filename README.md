@@ -1,4 +1,5 @@
 # MTLSys: Latency-aware Pruning for Multi-task Learning
+Authors: Abhigyan Khaund, Joseph Miano
 
 ## Run examples/demos
 #### Set up conda environment
